@@ -21,7 +21,7 @@ class AxeLibrary():
         Executes accessibility tests in current page by injecting axe-core javascript and write results into `result_file` (json). Return result statisitics
 
         |  = Attribute =  |  = Description =  | = Reference = |
-        | result_file     |  File to store accessibility test results (.json). Ex: `google.json`  |
+        | result_file     |  File to store accessibility test results (.json). Ex: `google.json`  |  |
         | context         |  Which page part(s) to analyze and/or what to exclude. Ex: `#main` |  https://www.deque.com/axe/core-documentation/api-documentation/#context-parameter  |
         | options         |  Dictionary of aXe options. Ex: `{runOnly: 'wcag2a'}` |  https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter  |
         """
