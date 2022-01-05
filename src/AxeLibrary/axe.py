@@ -16,12 +16,14 @@ class AxeLibrary():
         self.results = None
 
     @keyword("Run Accessibility Tests")
-    def run_accessibility_tests(self, result_file):
+    def run_accessibility_tests(self, result_file, context=None, options=None):
         """
         Executes accessibility tests in current page by injecting axe-core javascript and write results into `result_file` (json). Return result statisitics
 
-        |  = Attribute =  |  = Description =  |
-        | result_file     |  File to store accessibility test results (.json). Ex: google.json  |
+        |  = Attribute =  |  = Description =  | = Reference = |
+        | result_file     |  File to store accessibility test results (.json). Ex: `google.json`  |
+        | context         |  Which page part(s) to analyze and/or what to exclude. Ex: `#main` |  https://www.deque.com/axe/core-documentation/api-documentation/#context-parameter  |
+        | options         |  Dictionary of aXe options. Ex: `{runOnly: 'wcag2a'}` |  https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter  |
         """
         # get webdriver instance
         seleniumlib = BuiltIn().get_library_instance('SeleniumLibrary')
@@ -31,25 +33,25 @@ class AxeLibrary():
         # inject axe-core javascript into current page
         self.axe_instance.inject()
         # run axe accessibility validations
-        self.results = self.axe_instance.run()
+        self.results = self.axe_instance.run(context, options)
         # write results to specified file
         self.axe_instance.write_results(self.results, result_file)
         # generate json
         result_dict = {"inapplicable":len(self.results["inapplicable"]), "incomplete":len(self.results["incomplete"]),
-         "passes":len(self.results["passes"]), "violations":len(self.results["violations"])} 
+         "passes":len(self.results["passes"]), "violations":len(self.results["violations"])}
         logger.info(result_dict)
         # return result
         return result_dict
-    
+
     @keyword("Get Json Accessibility Result")
     def get_json_accessibility_result(self):
         """
-        Return accessibility test result in Json format. Need to be used after `Run Accessibility Tests` keyword    
+        Return accessibility test result in Json format. Need to be used after `Run Accessibility Tests` keyword
         """
         axe_result = json.dumps(self.results, indent = 3)
         logger.info(axe_result)
         return axe_result
-    
+
     @keyword("Log Readable Accessibility Result")
     def log_readable_accessibility_result(self, type):
         """
